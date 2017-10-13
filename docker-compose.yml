@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+
+  themessample.web:
+    image: razorpages-themes/themessample.web
+    build:
+      context: ./src/ThemesSample.Web
+      dockerfile: Dockerfile
