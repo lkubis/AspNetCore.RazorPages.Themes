@@ -1,7 +1,8 @@
 ﻿@page
 @model IndexModel
+@inject Theme Theme;
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home page " + Theme.Name;
 }
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">

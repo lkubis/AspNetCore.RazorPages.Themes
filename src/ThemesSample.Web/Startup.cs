@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Multitenancy.Extensions;
+using ThemesSample.Web.Multitenancy;
 
 namespace ThemesSample.Web
 {
@@ -20,8 +18,14 @@ namespace ThemesSample.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<MultitenancyOptions>(Configuration.GetSection("Multitenancy"));
+
+            services.AddMultitenancy<Theme, ThemeResolver>();
+
             services.AddMvc()
                 .WithRazorPagesRoot("/Pages");
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -37,6 +41,7 @@ namespace ThemesSample.Web
             }
 
             app.UseStaticFiles();
+            app.UseMultitenancy<Theme>();
             app.UseMvc();
         }
     }

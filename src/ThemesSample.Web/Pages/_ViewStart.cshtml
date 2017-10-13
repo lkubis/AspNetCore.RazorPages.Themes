@@ -1,3 +1,10 @@
-﻿@{
-    Layout = "_Layout";
+﻿@inject Theme Theme;
+@{
+    if(string.IsNullOrEmpty(Theme.Name))
+    {
+      Layout = "_Layout";
+    } else
+    {
+      Layout = $"_Layout_{Theme.Name}";
+    }
 }
