@@ -13,11 +13,17 @@ namespace Multitenancy
 
         public ThemeContext(TTheme theme)
         {
-            if(theme == null)
+            if (theme == null)
                 throw new ArgumentNullException(nameof(theme));
 
             Theme = theme;
             Properties = new Dictionary<string, object>();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -27,17 +33,28 @@ namespace Multitenancy
 
             if (disposing)
             {
-                
+                foreach (var prop in Properties)
+                {
+                    TryDisposeProperty(prop.Value as IDisposable);
+                }
+                TryDisposeProperty(Theme as IDisposable);
             }
 
             _disposed = true;
-
         }
-
-        public void Dispose()
+        
+        private void TryDisposeProperty(IDisposable obj)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (obj == null)
+                return;
+
+            try
+            {
+                obj.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
     }
 }

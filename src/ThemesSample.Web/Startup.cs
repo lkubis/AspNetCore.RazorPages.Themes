@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Multitenancy.Extensions;
@@ -26,6 +27,10 @@ namespace ThemesSample.Web
             services.AddMvc()
                 .WithRazorPagesRoot("/Pages");
 
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Add(new ThemePageViewLocationExpander());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

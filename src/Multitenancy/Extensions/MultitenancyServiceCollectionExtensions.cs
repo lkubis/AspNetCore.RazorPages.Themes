@@ -15,11 +15,11 @@ namespace Multitenancy.Extensions
             // No longer registered by default as of ASP.NET Core RC2
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // Make Tenant and TenantContext injectable
+            // Make Theme and ThemeContext injectable
             services.AddScoped(prov => prov.GetService<IHttpContextAccessor>()?.HttpContext?.GetThemeContext<TTheme>());
             services.AddScoped(prov => prov.GetService<ThemeContext<TTheme>>()?.Theme);
 
-            // Make ITenant injectable for handling null injection, similar to IOptions
+            // Make ITheme injectable for handling null injection, similar to IOptions
             services.AddScoped<ITheme<TTheme>>(prov => new ThemeWrapper<TTheme>(prov.GetService<TTheme>()));
 
             // Ensure caching is available for caching resolvers
